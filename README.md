@@ -9,204 +9,192 @@ Open-source tools for AI developers, prompt engineering, token optimization, loc
 
 A growing collection of practical utilities and developer resources for working with modern AI systems.
 
-The repository includes:
+The repository currently focuses on:
 
-🤖 Claude Code and local LLM workflows
-🦙 Ollama integrations and local model tooling
-🧠 Prompt engineering utilities
-🔢 Token and context-window tools
-🛠️ Developer utilities
-🔐 Privacy-focused, browser-based tools
-📄 Text, Markdown, PDF and data conversion utilities
+🤖 AI-assisted development workflows
+🦙 Ollama and local LLM experimentation
+🧠 Prompt engineering and optimization
+🔢 Token and context-window utilities
+🛠️ Python developer tools
+🔐 Privacy-focused, browser-based utilities
+📄 Text, Markdown, PDF and data tools
 
-🌐 Web tools: ShortPrompt
+🌐 Related web tools: ShortPrompt
 
-🚀 Featured: Claude Code + Ollama
+🚀 Local AI Development with Ollama
 
-One of the main projects in this repository is a local development workflow that connects Claude Code-compatible workflows with Ollama-hosted models.
+This repository includes tools and documentation for experimenting with local AI-assisted development workflows using Ollama.
 
-The goal is simple:
+The goal is to make local LLM experimentation easier while keeping the development workflow transparent and reproducible.
 
-Run AI-assisted development workflows locally, using models available through Ollama, without relying on paid Anthropic API usage for those local runs.
+Important: Local inference is not token-free. Models still process tokens and consume local CPU, GPU, memory, and storage resources. The benefit is that local inference can avoid paid cloud API usage for workloads that can be handled locally.
 
-How it works
-┌─────────────────────── Your Computer ───────────────────────┐
-│                                                             │
-│   Claude Code / CLI                                         │
-│          │                                                  │
-│          │ Anthropic-compatible API                         │
-│          ▼                                                  │
-│   ┌───────────────┐                                        │
-│   │     Ollama    │                                        │
-│   │ localhost:    │                                        │
-│   │    11434      │                                        │
-│   └───────┬───────┘                                        │
-│           │                                                 │
-│           ▼                                                 │
-│      Local LLM Model                                        │
-│                                                             │
-│   Project files + CLAUDE.md remain on your machine          │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+Basic architecture
+┌────────────────────── Your Computer ──────────────────────┐
+│                                                           │
+│   Developer / CLI                                         │
+│         │                                                 │
+│         ▼                                                 │
+│   Local AI Workflow                                       │
+│         │                                                 │
+│         ▼                                                 │
+│   ┌───────────────┐                                      │
+│   │    Ollama     │                                      │
+│   │ localhost:    │                                      │
+│   │    11434      │                                      │
+│   └───────┬───────┘                                      │
+│           │                                               │
+│           ▼                                               │
+│      Local LLM Model                                      │
+│                                                           │
+└───────────────────────────────────────────────────────────┘
 
 
-This setup can be useful for:
+The exact capabilities of a local workflow depend on the CLI, model, Ollama version, configuration, and hardware being used.
 
-code exploration
-refactoring
-boilerplate generation
-local experimentation
-test generation
-codebase analysis
-prompt and context experimentation
-⚠️ Important
+🦙 Ollama Setup
 
-This project does not make an LLM inference process "token-free".
+Install Ollama using the official installation instructions for your operating system.
 
-"Zero-token" refers to zero paid Anthropic API tokens/costs when using a local Ollama model, not to the absence of tokens during model inference.
+Then download a compatible coding model.
 
-Local inference still consumes model tokens and local CPU/GPU/RAM resources.
+For example:
 
-🦙 Local Claude Code / Ollama Setup
-1. Install Ollama
+ollama pull qwen2.5-coder:1.5b
 
-Follow the official Ollama installation instructions for your operating system.
 
-Then download a coding model:
+The model can be changed depending on your hardware and workload.
 
-ollama pull qwen3-coder
+Verify that Ollama is available:
 
-2. Configure the local endpoint
+ollama list
 
-For a shell session:
+
+The default local API endpoint is:
+
+http://localhost:11434
+
+Docker
+
+Ollama can also be run in Docker:
+
+docker run -d \
+  --name shortprompt-ollama \
+  -v ollama_data:/root/.ollama \
+  -p 11434:11434 \
+  ollama/ollama
+
+
+Then download the model:
+
+docker exec -it shortprompt-ollama ollama pull qwen2.5-coder:1.5b
+
+🤖 Claude Code Compatibility
+
+This repository documents experiments involving Claude Code-compatible configurations and local Ollama models.
+
+Compatibility depends on:
+
+Claude Code version
+Ollama version
+selected model
+API compatibility
+environment variables
+local hardware
+
+If you use environment variables to point a compatible client toward a local Ollama endpoint, verify the behavior with your specific versions before relying on the configuration for production work.
+
+Example:
 
 export ANTHROPIC_BASE_URL="http://localhost:11434"
 export ANTHROPIC_AUTH_TOKEN="ollama"
 export ANTHROPIC_API_KEY="ollama"
 
 
-Set the model variables according to the model and Claude Code version you are using:
+Do not assume that every Claude Code feature is supported by every local model or Ollama configuration.
 
-export ANTHROPIC_DEFAULT_SONNET_MODEL="qwen3-coder"
-export ANTHROPIC_DEFAULT_HAIKU_MODEL="qwen3-coder"
+📄 CLAUDE.md
 
-3. Start the workflow
-claude --model qwen3-coder
+A CLAUDE.md file can provide project-specific instructions to an AI coding agent.
 
+Typical information includes:
 
-Inside your project, /init can be used to create a CLAUDE.md file when supported by your Claude Code setup.
+build commands
+test commands
+linting rules
+architecture conventions
+important directories
+files that should not be modified
+project-specific development guidelines
 
-📄 Why CLAUDE.md Matters
-
-CLAUDE.md gives an AI coding agent persistent project-specific context.
-
-A useful file can define:
+Example:
 
 # Project Instructions
 
 ## Build
+
 npm run build
 
 ## Test
+
 npm test
 
 ## Lint
+
 npm run lint
 
 ## Code Style
-- Use strict TypeScript
-- Avoid unnecessary `any`
-- Follow the existing project architecture
+
+- Follow the existing project architecture.
+- Avoid unnecessary dependencies.
+- Keep changes focused.
 
 ## Excluded Directories
+
 - node_modules/
 - dist/
 - .next/
 
 
-Good project instructions can reduce unnecessary context and make local AI-assisted development more predictable.
+The exact contents should be adapted to the project being worked on.
 
-🔄 Local ↔ Cloud Workflow
+🧰 ShortPrompt Tools
 
-You can keep separate shell aliases for local and cloud workflows.
-
-Local Ollama
-alias claude-local='export ANTHROPIC_BASE_URL="http://localhost:11434" && export ANTHROPIC_AUTH_TOKEN="ollama" && export ANTHROPIC_API_KEY="ollama" && claude --model qwen3-coder'
-
-Cloud / default configuration
-alias claude-cloud='unset ANTHROPIC_BASE_URL && unset ANTHROPIC_AUTH_TOKEN && unset ANTHROPIC_API_KEY && claude'
-
-
-This makes it possible to switch between local experimentation and your normal cloud configuration.
-
-🧰 ShortPrompt AI Tools
-
-This repository is also connected to ShortPrompt, a collection of free browser-based utilities for AI developers, prompt engineers and creators.
-
-Explore the tools:
+This repository is connected to ShortPrompt, a collection of browser-based utilities for AI developers, prompt engineers, and creators.
 
 🧠 Prompt Engineering
-System Prompt Builder — Build structured system prompts for modern LLM workflows.
-Prompt Token Compressor — Reduce unnecessary prompt whitespace and formatting.
-AI Context Window Calculator — Estimate token usage and context-window requirements.
-LLM JSON Formatter — Validate and clean JSON generated by AI models.
+System Prompt Builder — Build structured system prompts for LLM workflows.
+Prompt Token Compressor — Reduce unnecessary prompt formatting and redundancy.
+AI Context Window Calculator — Estimate token usage and context requirements.
+JSON Formatter & Validator — Format and validate structured data.
 🛠️ Developer Utilities
-SVG to PNG Converter
-JSON and data formatting tools
+SVG to PNG conversion
+JSON and data formatting
 Markdown and text utilities
-Text-to-PDF conversion
-Developer-focused calculators
+PDF and document utilities
+Token and context calculators
+AI development helpers
 🔐 Privacy-Focused Browser Tools
 
-Where supported, ShortPrompt tools perform processing directly in the browser rather than requiring a server-side upload.
+Some ShortPrompt utilities are designed to process data directly in the browser.
 
-Examples include:
-
-local OCR
-file encryption
-Base64 encoding/decoding
-browser-based text processing
-local AI experiments
-
-🌐 Explore the full collection on ShortPrompt.
-
-🔒 Local Processing & Privacy
-
-One of the goals of the ShortPrompt ecosystem is to provide tools that can perform useful operations directly in the browser.
-
-For client-side tools, processing can occur locally using browser technologies such as:
+Depending on the individual tool, technologies may include:
 
 Web APIs
 WebAssembly
 JavaScript
 Web Crypto APIs
 
-This can be useful when working with sensitive prompts, documents or files.
+Client-side processing can reduce the need to upload files or text to a remote processing server.
 
-Important
+Important: Always check the documentation of the individual tool before processing sensitive information. Client-side processing does not automatically mean that every component of a website is completely offline.
 
-"Client-side" does not automatically mean that every part of a website is offline or that every network request is impossible.
+🌐 Explore the tools:
+https://shortprompt.altervista.org/
 
-Always check the documentation of the individual tool before processing sensitive information.
+🐍 Python Utilities
 
-💻 Local LLM Hardware Guide
-
-Local model performance depends heavily on the model size, quantization, CPU/GPU and available memory.
-
-As a rough starting point:
-
-Hardware	Typical use
-8–16 GB RAM	Smaller coding and general-purpose models
-32 GB RAM	Larger models and longer-context workflows
-64 GB+ RAM / dedicated GPU	Larger coding models and more demanding workloads
-
-The best model for a given machine depends on the model architecture, quantization and workload, so benchmark your own hardware when possible.
-
-📁 Repository Structure
-
-The repository currently contains several standalone Python utilities and AI-development resources.
-
-Examples include:
+The repository includes several standalone Python utilities, including:
 
 .
 ├── CLAUDE.md
@@ -220,9 +208,9 @@ Examples include:
 └── token_calculator.py
 
 
-Additional utilities may be added as the project evolves.
+If you are upgrading from an earlier version, note that mardown_stripper.py should be renamed to markdown_stripper.py.
 
-🧪 Running the Python Tools
+📦 Installation
 
 Clone the repository:
 
@@ -233,9 +221,6 @@ cd awesome-ai-tools-and-utilities
 Create a virtual environment:
 
 python -m venv .venv
-
-
-Activate it.
 
 macOS / Linux
 source .venv/bin/activate
@@ -248,85 +233,127 @@ Install dependencies:
 
 pip install -r requirements.txt
 
+🔎 Impact Briefing
 
-Then run the utility you need, for example:
+For complex tasks involving multiple files, the repository includes an impact briefing utility:
 
-python token_calculator.py
+python claude_impact_briefing.py --task "DESCRIPTION_OF_TASK"
 
 
-Check each script for tool-specific arguments and requirements.
+The tool is intended to provide a compact overview before deeper code inspection.
+
+Use it when it is useful; it is not required for every task.
+
+✂️ Prompt Compression
+
+The repository also includes a local prompt utility:
+
+python shortprompt.py --prompt "YOUR_PROMPT"
+
+
+Use it when prompt compression or optimization is actually useful.
+
+Prompt compression should preserve the original intent and should not be applied automatically to every prompt.
+
+🔍 Local Semantic Search
+
+The local utility can be used for semantic code-search experiments:
+
+python shortprompt_local.py --search "QUERY"
+
+
+Depending on configuration, this can use a local Ollama model.
+
+🧪 Validation
+
+After modifying code:
+
+Run the relevant tests.
+Run syntax or type checks where applicable.
+Check the Git diff.
+Verify that unrelated files were not changed.
+
+If a test cannot be run, document the reason.
+
+💻 Local LLM Hardware
+
+Local model performance depends on:
+
+model size
+quantization
+available RAM
+GPU/VRAM
+CPU performance
+context length
+workload
+
+As a general guideline:
+
+Hardware	Possible workload
+8–16 GB RAM	Smaller models and lightweight tasks
+32 GB RAM	Larger models and longer-context workflows
+64 GB+ RAM / dedicated GPU	More demanding local models and codebase analysis
+
+Actual performance varies significantly between systems. Benchmark your own hardware whenever possible.
 
 🗺️ Roadmap
-
-Planned improvements include:
-
  Add automated tests
  Add GitHub Actions CI
- Improve documentation for each utility
+ Improve documentation for individual utilities
  Add more local LLM workflows
- Add additional token/context utilities
+ Add token/context benchmarks
+ Add reproducible model benchmarks
  Improve cross-platform support
- Add benchmarks for local coding models
- Add examples and real-world workflows
- Improve contribution guidelines
- Expand the collection of privacy-focused developer tools
-
-Suggestions and contributions are welcome.
-
+ Add real-world workflow examples
+ Improve contribution documentation
+ Expand privacy-focused developer utilities
 🤝 Contributing
 
 Contributions are welcome.
 
 You can contribute by:
 
-Opening an issue with an idea or bug report.
+Opening an issue.
 Improving documentation.
 Adding tests.
 Improving an existing utility.
-Adding a new developer-focused tool.
-Sharing reproducible benchmarks for local models.
+Adding a useful developer tool.
+Sharing reproducible benchmarks.
 
-Before submitting a pull request:
+Please keep pull requests focused and explain the reason for significant changes.
 
-git pull
-
-
-Make sure your changes are documented and that existing functionality is not unintentionally broken.
-
-🐛 Issues & Discussions
+🐛 Issues
 
 Found a bug or have an idea?
 
-Open an issue in this repository and include:
+Open an issue.
 
-operating system
+When reporting a problem, include:
+
+Operating system
 Python version
-model/version involved
-steps to reproduce
-expected behavior
-actual behavior
-
-Clear reproduction steps make troubleshooting significantly easier.
-
+Ollama version, if relevant
+Model name/version, if relevant
+Steps to reproduce
+Expected behavior
+Actual behavior
 📚 Resources
-🌐 ShortPrompt: https://shortprompt.altervista.org/
-💻 Repository: https://github.com/shortprompt-blip/awesome-ai-tools-and-utilities
-🤖 Claude Code documentation: https://docs.anthropic.com/
-🦙 Ollama: https://ollama.com/
+🌐 ShortPrompt
+💻 GitHub Repository
+🤖 Claude Documentation
+🦙 Ollama
 📜 License
 
 See the repository license file for the current licensing terms.
 
 ⭐ Support the Project
 
-If you find these tools useful:
+If you find the project useful:
 
 ⭐ Star the repository
 🐛 Report bugs
 💡 Suggest improvements
 🔀 Submit a pull request
-📢 Share the project with other AI developers
+📢 Share it with other AI developers
 
-Every contribution helps the project grow.
-
-Built for developers experimenting with AI, local LLMs, prompt engineering and privacy-focused tooling.
+Built for developers exploring AI, local LLMs, prompt engineering, and privacy-focused tooling.
