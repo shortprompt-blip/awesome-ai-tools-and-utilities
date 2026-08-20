@@ -1,150 +1,402 @@
-# ⚡ Awesome AI Tools & Utilities — ShortPrompt & Claude Code Toolkit
+# ⚡ Awesome AI Tools & Utilities
 
-> **Suite completa di strumenti per sviluppatori AI, prompt engineering e integrazione locale di Claude Code con Ollama.**  
-> Tutti i tool e le utility sono **100% client-side** e ad accesso gratuito su [ShortPrompt](https://shortprompt.altervista.org).
-
----
-
-## 📌 Indice
-- [🚀 Claude Code & ShortPrompt Integration](#claude-code--shortprompt-integration)
-  - [Cos'è e Come Funziona](#cosè-e-come-funziona)
-  - [Istruzioni & Protocolli d'Esecuzione](#istruzioni--protocolli-desecuzione)
-  - [Skills e Comandi Locali](#skills-e-comandi-locali)
-  - [Setup Ambiente Locale (Ollama / Docker)](#setup-ambiente-locale-ollama--docker)
-- [🧰 Suite dei Tool Gratuiti di ShortPrompt](#suite-dei-tool-gratuiti-di-shortprompt)
-  - [Featured AI Developer Tools](#featured-ai-developer-tools)
-  - [Prompt Engineering & Context Optimization](#prompt-engineering--context-optimization)
-  - [Sicurezza, Cifratura & Utility Dati Locali](#sicurezza-cifratura--utility-dati-locali)
-  - [Guide Tecniche & Documentazione](#guide-tecniche--documentazione)
-- [🛡️ Perché Utilizzare Tool Client-Side](#perché-utilizzare-tool-client-side)
-- [💻 Requisiti Hardware](#requisiti-hardware)
-- [❓ FAQ & Troubleshooting](#faq--troubleshooting)
-- [🔗 Link & Risorse](#link--risorse)
+Open-source tools for AI developers, prompt engineering, token optimization, local LLM workflows, and privacy-focused browser utilities.
 
 ---
 
-## 🚀 Claude Code & ShortPrompt Integration
+A growing collection of practical utilities and developer resources for working with modern AI systems.
 
-### 💡 Cos'è e Come Funziona
-**Claude Code** è l'agente di sviluppo da terminale di Anthropic. Questo workspace è ottimizzato per l'esecuzione locale a **costo zero ($0 Token API)** e con un'elevata efficienza del contesto tramite l'integrazione con **Ollama** e gli script della suite **ShortPrompt**.
+The repository currently focuses on:
+- 🤖 AI-assisted development workflows
+- 🦙 Ollama and local LLM experimentation
+- 🧠 Prompt engineering and optimization
+- 🔢 Token and context-window utilities
+- 🛠️ Python developer tools
+- 🔐 Privacy-focused, browser-based utilities
+- 📄 Text, Markdown, PDF and data tools
+- 🌐 Related web tools: [ShortPrompt](https://shortprompt.altervista.org/)
 
 ---
 
-### ⚡ Istruzioni & Protocolli d'Esecuzione
+## 🚀 Local AI Development with Ollama
 
-Prima di avviare refactoring complessi o implementazioni multi-file, esegui lo script di briefing d'impatto locale per generare una mappa AST compressa:
+This repository includes tools and documentation for experimenting with local AI-assisted development workflows using Ollama.
 
-```bash
-python claude_impact_briefing.py --task "DESCRIZIONE_FEATURE_O_BUG"
+The goal is to make local LLM experimentation easier while keeping the development workflow transparent and reproducible.
+
+> **Important:** Local inference is not token-free. Models still process tokens and consume local CPU, GPU, memory, and storage resources. The benefit is that local inference can avoid paid cloud API usage for workloads that can be handled locally.
+
+### Basic Architecture
+
+```
+┌────────────────────── Your Computer ──────────────────────┐
+│                                                           │
+│                  Developer / CLI                          │
+│                         │                                 │
+│                         ▼                                 │
+│                 Local AI Workflow                         │
+│                         │                                 │
+│                         ▼                                 │
+│                 ┌───────────────┐                         │
+│                 │    Ollama     │                         │
+│                 │  localhost:   │                         │
+│                 │     11434     │                         │
+│                 └───────┬───────┘                         │
+│                         │                                 │
+│                         ▼                                 │
+│                  Local LLM Model                          │
+│                                                           │
+└───────────────────────────────────────────────────────────┘
 ```
 
-#### ✂️ ShortPrompt Skill (`/shortprompt`)
-Quando è necessario ottimizzare, accorciare o minificare un prompt, esegui l'engine ShortPrompt locale:
+The exact capabilities of a local workflow depend on the CLI, model, Ollama version, configuration, and hardware being used.
+
+### 🦙 Ollama Setup
+
+Install Ollama using the official installation instructions for your operating system.
+
+Then download a compatible coding model.
+
+For example:
 
 ```bash
-python shortprompt.py --prompt "IL_TUO_PROMPT_VERBOSE"
+ollama pull qwen2.5-coder:1.5b
+```
+
+The model can be changed depending on your hardware and workload.
+
+Verify that Ollama is available:
+
+```bash
+ollama list
+```
+
+The default local API endpoint is:
+
+`http://localhost:11434`
+
+#### Docker
+
+Ollama can also be run in Docker:
+
+```bash
+docker run -d   --name shortprompt-ollama   -v ollama_data:/root/.ollama   -p 11434:11434   ollama/ollama
+```
+
+Then download the model:
+
+```bash
+docker exec -it shortprompt-ollama ollama pull qwen2.5-coder:1.5b
 ```
 
 ---
 
-### 🛠️ Skills e Comandi Locali
+## 🤖 Claude Code Compatibility
 
-1. **Pre-Execution Impact Briefing (`/briefing`)**: Scansiona firme AST, diff Git e grafi di importazione per creare un riassunto ad alta densità prima di eseguire compiti complessi.
-   ```bash
-   python claude_impact_briefing.py --task "DESCRIZIONE_DEL_TASK"
-   ```
+This repository documents experiments involving Claude Code-compatible configurations and local Ollama models.
 
-2. **ShortPrompt Engine (`/shortprompt`)**: Comprime istruzioni verbose in direttive dense e deterministiche.
-   ```bash
-   python shortprompt.py --prompt "TESTO_PROMPT_VERBOSE"
-   ```
+Compatibility depends on:
+- Claude Code version
+- Ollama version
+- Selected model
+- API compatibility
+- Environment variables
+- Local hardware
 
-3. **Local Semantic Code Search (`/local-search`)**: Utilizza l'istanza locale Ollama per individuare funzioni o logica in modo semantico nei file candidati senza leggere intere cartelle.
-   ```bash
-   python shortprompt_local.py --search "QUERY_DA_CERCARE"
-   ```
+If you use environment variables to point a compatible client toward a local Ollama endpoint, verify the behavior with your specific versions before relying on the configuration for production work.
 
-4. **Task Offloading to Local LLM (`/delegate`)**: Delega compiti di generazione semplici (mock, boilerplate, schemi) al modello locale a costo $0.
-   ```bash
-   python shortprompt_local.py --delegate "DESCRIZIONE_TASK" --file "PERCORSO_FILE_CONTESTO"
-   ```
+Example:
 
----
+```bash
+export ANTHROPIC_BASE_URL="http://localhost:11434"
+export ANTHROPIC_AUTH_TOKEN="ollama"
+export ANTHROPIC_API_KEY="ollama"
+```
 
-### 🚀 Setup Ambiente Locale (Ollama / Docker)
-- **Host Locale:** `http://localhost:11434`
-- **Modello Predefinito:** `qwen2.5-coder:1.5b`
-- **Comando Docker:**
-  ```bash
-  docker run -d --name shortprompt-ollama -v ollama_data:/root/.ollama -p 11434:11434 ollama/ollama
-  docker exec -it shortprompt-ollama ollama pull qwen2.5-coder:1.5b
-  ```
+Do not assume that every Claude Code feature is supported by every local model or Ollama configuration.
 
 ---
 
-## 🧰 Suite dei Tool Gratuiti di ShortPrompt
+## 📄 CLAUDE.md
 
-Oltre al toolkit per Claude Code, la piattaforma [ShortPrompt](https://shortprompt.altervista.org) offre un ecosistema di strumenti per sviluppatori AI che funzionano **100% in-browser**.
+A `CLAUDE.md` file can provide project-specific instructions to an AI coding agent.
 
-### ⚡ Featured AI Developer Tools
-- 🎯 **[System Prompt Builder](https://shortprompt.altervista.org/system-prompt-builder/)**: Progetta prompt di sistema deterministici per OpenAI ChatGPT, Anthropic Claude e Google Gemini con vincoli di output JSON/Markdown.
-- 🗜️ **[Prompt Token Compressor](https://shortprompt.altervista.org/prompt-token-compressor-reducer/)**: Riduci i costi delle API LLM fino al 40% rimuovendo whitespace ridondanti, frasi di riempimento e formattazioni superflue.
-- 📄 **[Universal Text to PDF Converter](https://shortprompt.altervista.org/universal-text-to-pdf-converter/)**: Converti codice sorgente, documentazione Markdown e testo in file PDF compressi senza inviare dati a server remoti.
+Typical information includes:
+- Build commands
+- Test commands
+- Linting rules
+- Architecture conventions
+- Important directories
+- Files that should not be modified
+- Project-specific development guidelines
 
----
+Example:
 
-### 📐 Prompt Engineering & Context Optimization
-- 🧮 **[AI Context Window Calculator](https://shortprompt.altervista.org/ai-context-windows-calculator/)**: Calcola l'occupazione dei token e il limite di parole per contesti da 128k, 200k e 1M di token.
-- ✍️ **[AI Text Humanizer](https://shortprompt.altervista.org/ai-text-humanizer/)**: Perfeziona il testo generato da AI bilanciando la struttura delle frasi ed eliminando pattern ripetitivi.
-- ⏱️ **[Voiceover Script Timer](https://shortprompt.altervista.org/ai-voiceover-script-timer/)**: Calcola la durata audio, la cadenza di parlato e i ritmi per script generati da AI.
-- 💬 **[Local Private AI Chatbot](https://shortprompt.altervista.org/local-ai-chatbot/)**: Esegui modelli LLM compatti direttamente nel browser senza inviare dati online.
+```markdown
+# Project Instructions
 
----
+## Build
+npm run build
 
-### 🔐 Sicurezza, Cifratura & Utility Dati Locali
-- 🔒 **[AES-256 File Encryptor](https://shortprompt.altervista.org/aes-256-file-encryptor/)**: Cifra e decifra file e credenziali in locale tramite le Web Cryptography API.
-- 🔤 **[Base64 Encoder & Decoder](https://shortprompt.altervista.org/base64-encoder-decoder/)**: Codifica e decodifica file binari e stringhe in formato Base64 in totale sicurezza.
-- 🛠️ **[LLM JSON Formatter](https://shortprompt.altervista.org/llm-json-formatter/)**: Valida, pulisci e ripara payload JSON malformati restituiti dalle function call degli LLM.
+## Test
+npm test
 
----
+## Lint
+npm run lint
 
-### 📖 Guide Tecniche & Documentazione
-- 🎨 **[Midjourney v6 Prompt Guide](https://shortprompt.altervista.org/midjourney-v6-prompt-guide/)**: Guida ai parametri per aspect ratio, valori stylize, Niji 6 e prompt negativi.
-- 👁️ **[Local OCR Guide](https://shortprompt.altervista.org/how-to-extract-text-from-image-locally/)**: Estrai testo da immagini direttamente nel browser con WebAssembly OCR.
-- ☕ **[AI Coffee News](https://shortprompt.altervista.org/ai-coffee-news/)**: Aggiornamenti quotidiani su modelli LLM, benchmark di engineering e novità dell'ecosistema AI.
+## Code Style
+- Follow the existing project architecture.
+- Avoid unnecessary dependencies.
+- Keep changes focused.
 
----
+## Excluded Directories
+- node_modules/
+- dist/
+- .next/
+```
 
-## 🛡️ Perché Utilizzare Tool Client-Side
-
-I tool tradizionali per sviluppatori richiedono spesso l'invio di codice sorgente, dati utente o prompt riservati a server terzi. Tutti i tool di ShortPrompt sono sviluppati con una **Zero-Server Architecture**:
-1. **Riservatezza dei Dati:** I dati non abbandonano mai la RAM del tuo dispositivo.
-2. **Zero Latenza:** Esecuzione immediata tramite le API WebAssembly e V8 del browser.
-3. **Nessun Tracciamento:** Zero cookie di profilazione o tracciamento lato server.
-
----
-
-## 💻 Requisiti Hardware (per Modelli Locali)
-
-| RAM / VRAM | Modello Consigliato | Caso d'Uso |
-| :--- | :--- | :--- |
-| **8 GB - 16 GB** | `qwen2.5-coder:1.5b` / `qwen2.5-coder:7b` | Briefing rapido, boilerplate, query semantiche di base. |
-| **32 GB (M1/M2/M3)** | `qwen3-coder` / `glm4-flash` | Ottimo bilanciamento tra velocità e finestra di contesto. |
-| **64 GB+ / GPU 24GB+** | `qwen2.5-coder:32b` / `codellama:34b` | Analisi avanzata di intere codebase complesse. |
+The exact contents should be adapted to the project being worked on.
 
 ---
 
-## ❓ FAQ & Troubleshooting
+## 🧰 ShortPrompt Tools
 
-### Come faccio a verificare se Ollama risponde correttamente?
-Esegui `curl http://localhost:11434/api/tags` da terminale per verificare la lista dei modelli caricati.
+This repository is connected to [ShortPrompt](https://shortprompt.altervista.org/), a collection of browser-based utilities for AI developers, prompt engineers, and creators.
 
-### I comandi Python richiedono dipendenze esterne?
-Gli script `claude_impact_briefing.py`, `shortprompt.py` e `shortprompt_local.py` sono progettati per funzionare con la libreria standard o con dipendenze minime.
+### 🧠 Prompt Engineering & Context Optimization
+- 🎯 **[System Prompt Builder](https://shortprompt.altervista.org/system-prompt-builder/)** — Build structured system prompts for LLM workflows.
+- 🗜️ **[Prompt Token Compressor](https://shortprompt.altervista.org/prompt-token-compressor-reducer/)** — Reduce unnecessary prompt formatting and redundancy.
+- 🧮 **[AI Context Window Calculator](https://shortprompt.altervista.org/ai-context-windows-calculator/)** — Estimate token usage and context requirements.
+- 🛠️ **[LLM JSON Formatter & Validator](https://shortprompt.altervista.org/llm-json-formatter/)** — Format, clean, and validate structured JSON data returned by LLM function calls.
+- ✍️ **[AI Text Humanizer](https://shortprompt.altervista.org/ai-text-humanizer/)** — Refine AI-generated text by balancing sentence structure and removing repetitive patterns.
+
+### 🛠️ Developer & Privacy-Focused Utilities
+- 📄 **[Universal Text to PDF Converter](https://shortprompt.altervista.org/universal-text-to-pdf-converter/)** — Convert source code, Markdown documentation, and text to compressed PDFs locally.
+- 🔒 **[AES-256 File Encryptor](https://shortprompt.altervista.org/aes-256-file-encryptor/)** — Encrypt and decrypt files and credentials locally using Web Cryptography APIs.
+- 🔤 **[Base64 Encoder & Decoder](https://shortprompt.altervista.org/base64-encoder-decoder/)** — Encode and decode binary files and strings safely in browser.
+- 💬 **[Local Private AI Chatbot](https://shortprompt.altervista.org/local-ai-chatbot/)** — Run compact LLMs directly in your browser without sending data online.
+- ⏱️ **[Voiceover Script Timer](https://shortprompt.altervista.org/ai-voiceover-script-timer/)** — Calculate audio duration, speaking rate, and pacing for AI scripts.
+
+### 📖 Guides & Resources
+- 🎨 **[Midjourney v6 Prompt Guide](https://shortprompt.altervista.org/midjourney-v6-prompt-guide/)** — Complete parameter guide for aspect ratios, stylize values, Niji 6, and negative prompts.
+- 👁️ **[Local OCR Guide](https://shortprompt.altervista.org/how-to-extract-text-from-image-locally/)** — Extract text from images directly in the browser via WebAssembly OCR.
+- ☕ **[AI Coffee News](https://shortprompt.altervista.org/ai-coffee-news/)** — Daily updates on LLMs, engineering benchmarks, and AI ecosystem news.
+
+### 🔐 Privacy-Focused Browser Tools
+
+Some ShortPrompt utilities are designed to process data directly in the browser.
+
+Depending on the individual tool, technologies may include:
+- Web APIs
+- WebAssembly
+- JavaScript
+- Web Crypto APIs
+
+Client-side processing can reduce the need to upload files or text to a remote processing server.
+
+> **Important:** Always check the documentation of the individual tool before processing sensitive information. Client-side processing does not automatically mean that every component of a website is completely offline.
+
+🌐 **Explore all tools:** [https://shortprompt.altervista.org/](https://shortprompt.altervista.org/)
 
 ---
 
-## 🔗 Link & Risorse
-- 🌐 **Sito Ufficiale:** [shortprompt.altervista.org](https://shortprompt.altervista.org)
-- 📖 **Guida Completa Claude Code:** [Integrazione Claude Code & Skill Locali](https://shortprompt.altervista.org/claude-code-zero-token)
-- 📦 **GitHub Repository:** [Awesome AI Tools & Utilities](https://github.com/shortprompt-blip/awesome-ai-tools-and-utilities)
+## 🐍 Python Utilities
+
+The repository includes several standalone Python utilities, including:
+
+```
+.
+├── CLAUDE.md
+├── README.md
+├── benchmark_briefing.py
+├── claude_impact_briefing.py
+├── markdown_stripper.py
+├── requirements.txt
+├── shortprompt.py
+├── shortprompt_local.py
+└── token_calculator.py
+```
+
+*If you are upgrading from an earlier version, note that `mardown_stripper.py` should be renamed to `markdown_stripper.py`.*
+
+---
+
+## 📦 Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/shortprompt-blip/awesome-ai-tools-and-utilities.git
+cd awesome-ai-tools-and-utilities
+```
+
+Create a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+**macOS / Linux:**
+```bash
+source .venv/bin/activate
+```
+
+**Windows:**
+```cmd
+.venv\Scriptsctivate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 🔎 Impact Briefing
+
+For complex tasks involving multiple files, the repository includes an impact briefing utility:
+
+```bash
+python claude_impact_briefing.py --task "DESCRIPTION_OF_TASK"
+```
+
+The tool is intended to provide a compact overview before deeper code inspection.
+
+Use it when it is useful; it is not required for every task.
+
+---
+
+## ✂️ Prompt Compression
+
+The repository also includes a local prompt utility:
+
+```bash
+python shortprompt.py --prompt "YOUR_PROMPT"
+```
+
+Use it when prompt compression or optimization is actually useful.
+
+Prompt compression should preserve the original intent and should not be applied automatically to every prompt.
+
+---
+
+## 🔍 Local Semantic Search
+
+The local utility can be used for semantic code-search experiments:
+
+```bash
+python shortprompt_local.py --search "QUERY"
+```
+
+Depending on configuration, this can use a local Ollama model.
+
+---
+
+## 🧪 Validation
+
+After modifying code:
+1. Run the relevant tests.
+2. Run syntax or type checks where applicable.
+3. Check the Git diff.
+4. Verify that unrelated files were not changed.
+
+If a test cannot be run, document the reason.
+
+---
+
+## 💻 Local LLM Hardware
+
+Local model performance depends on:
+- Model size
+- Quantization
+- Available RAM
+- GPU/VRAM
+- CPU performance
+- Context length
+- Workload
+
+As a general guideline:
+
+| Hardware | Possible Workload |
+| :--- | :--- |
+| **8–16 GB RAM** | Smaller models and lightweight tasks |
+| **32 GB RAM** | Larger models and longer-context workflows |
+| **64 GB+ RAM / dedicated GPU** | More demanding local models and codebase analysis |
+
+Actual performance varies significantly between systems. Benchmark your own hardware whenever possible.
+
+---
+
+## 🗺️ Roadmap
+
+- Add automated tests
+- Add GitHub Actions CI
+- Improve documentation for individual utilities
+- Add more local LLM workflows
+- Add token/context benchmarks
+- Add reproducible model benchmarks
+- Improve cross-platform support
+- Add real-world workflow examples
+- Improve contribution documentation
+- Expand privacy-focused developer utilities
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome.
+
+You can contribute by:
+- Opening an issue.
+- Improving documentation.
+- Adding tests.
+- Improving an existing utility.
+- Adding a useful developer tool.
+- Sharing reproducible benchmarks.
+
+Please keep pull requests focused and explain the reason for significant changes.
+
+---
+
+## 🐛 Issues
+
+Found a bug or have an idea? Open an issue.
+
+When reporting a problem, include:
+- Operating system
+- Python version
+- Ollama version, if relevant
+- Model name/version, if relevant
+- Steps to reproduce
+- Expected behavior
+- Actual behavior
+
+---
+
+## 📚 Resources
+
+- 🌐 [ShortPrompt](https://shortprompt.altervista.org/)
+- 💻 [GitHub Repository](https://github.com/shortprompt-blip/awesome-ai-tools-and-utilities)
+- 🤖 [Claude Documentation](https://docs.anthropic.com/)
+- 🦙 [Ollama](https://ollama.com/)
+
+---
+
+## 📜 License
+
+See the repository license file for the current licensing terms.
+
+---
+
+## ⭐ Support the Project
+
+If you find the project useful:
+- ⭐ Star the repository
+- 🐛 Report bugs
+- 💡 Suggest improvements
+- 🔀 Submit a pull request
+- 📢 Share it with other AI developers
+
+*Built for developers exploring AI, local LLMs, prompt engineering, and privacy-focused tooling.*
