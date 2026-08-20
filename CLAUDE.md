@@ -25,7 +25,7 @@ For complex multi-file tasks, use the repository impact briefing before making c
 python claude_impact_briefing.py --task "DESCRIPTION_OF_TASK"
 
 
-The briefing can provide a compact overview of AST signatures, Git changes, and project relationships before deeper inspection.
+The briefing provides a compact overview of repository structure and relevant changes before deeper inspection.
 
 Local Developer Tools
 Impact Briefing
@@ -41,7 +41,9 @@ Use when prompt compression, optimization, or shortening is explicitly requested
 python shortprompt.py --prompt "PROMPT_TEXT"
 
 
-Do not automatically compress every user prompt. Preserve the user's original intent and wording unless optimization is requested or clearly beneficial.
+Do not automatically compress every user prompt.
+
+Preserve the user's original intent and wording unless optimization is explicitly requested or clearly beneficial.
 
 Local Semantic Search
 
@@ -56,14 +58,14 @@ Local Task Delegation
 
 Use for suitable repetitive or low-risk generation tasks such as:
 
-mock data
-boilerplate
-schemas
-simple test scaffolding
+Mock data
+Boilerplate
+Schemas
+Simple test scaffolding
 python shortprompt_local.py --delegate "TASK_DESCRIPTION" --file "PATH_TO_CONTEXT_FILE"
 
 
-Review generated output before committing it.
+Always review generated output before committing it.
 
 Local LLM Environment
 
@@ -79,10 +81,9 @@ Example model:
 qwen2.5-coder:1.5b
 
 
-The model can be changed depending on available hardware and the task.
+The model can be changed depending on available hardware and workload.
 
-Example Docker setup:
-
+Docker Setup
 docker run -d \
   --name shortprompt-ollama \
   -v ollama_data:/root/.ollama \
@@ -95,7 +96,7 @@ Then:
 docker exec -it shortprompt-ollama ollama pull qwen2.5-coder:1.5b
 
 
-Local inference reduces reliance on paid cloud API usage, but it is not token-free and still consumes local compute resources.
+Local inference can reduce reliance on paid cloud API usage, but it is not token-free and still consumes local compute resources.
 
 Code Quality
 
@@ -124,11 +125,11 @@ Git Safety
 
 Do not:
 
-rewrite history unless explicitly requested;
-force-push;
-delete branches;
-discard unrelated user changes;
-overwrite files without first understanding their purpose.
+Rewrite history unless explicitly requested.
+Force-push.
+Delete branches.
+Discard unrelated user changes.
+Overwrite files without first understanding their purpose.
 
 Before destructive Git operations, ask for confirmation.
 
@@ -143,9 +144,17 @@ Prefer local processing when appropriate.
 Review generated commands before executing potentially destructive operations.
 Repository Scope
 
-This repository contains AI developer utilities, prompt-engineering tools, token/context utilities, and local LLM workflows.
+This repository contains:
 
-The ShortPrompt web tools are related to this repository but should not be modified or assumed to share the same runtime environment unless explicitly required.
+AI developer utilities
+Prompt-engineering tools
+Token and context utilities
+Local LLM workflows
+Python-based developer tools
+
+The ShortPrompt web tools are related to this repository but may use a different runtime environment.
+
+Do not modify or assume anything about the web application unless explicitly required by the task.
 
 Final Response Style
 
@@ -154,6 +163,6 @@ When completing a development task:
 Briefly describe what changed.
 Mention important files modified.
 Report tests or validation performed.
-Mention any remaining limitations or assumptions.
+Mention remaining limitations or assumptions.
 
 Keep the final response concise and technically precise.
