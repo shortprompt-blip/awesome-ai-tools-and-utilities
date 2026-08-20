@@ -1,6 +1,23 @@
 # awesome-ai-tools-and-utilities
 A collection of free web-based utilities for AI prompt engineering, token counting, text cleaning, and file conversion.
 
+## 💻 Included Python CLI Tools (Local Execution)
+
+Run these tools directly in your terminal using the Python scripts in this repository.
+
+### 1. Markdown Stripper (`markdown_stripper.py`)
+Strip all Markdown formatting (bold, headers, links) into clean plain text.
+* **CLI Command:** `python markdown_stripper.py --text "# Hello **World**"`
+* **Web Version:** [Try the Web GUI](https://shortprompt.altervista.org/markdown-to-plain-text-tool/)
+
+### 2. LLM Token & Context Window Calculator (`token_calculator.py`)
+Estimate tokens, words, and context limits for GPT-4o, Claude 3.5 & Gemini.
+* **CLI Command:** `python token_calculator.py --words 5000 --model claude-3.5-sonnet`
+* **Web Version:** [Open Visual Calculator](https://shortprompt.altervista.org/ai-context-windows-calculator/)
+
+---
+
+
 ## 🧰 Featured Web Tools
 
 ### 🤖 AI & Prompt Engineering
