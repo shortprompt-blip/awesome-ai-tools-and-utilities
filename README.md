@@ -22,6 +22,14 @@ python claude_impact_briefing.py --task "Fix authentication bug in user controll
 
 ---
 
+## 📊 Empirical Benchmarks & Token Verification
+
+Instead of relying on estimated claims, you can verify the exact context compression ratio on your own codebase using the included benchmark suite:
+
+```bash
+python benchmark_briefing.py --task "Add rate limiting to API endpoints"
+
+
 ## 💻 Included Local Python CLI Tools
 
 Run these scripts directly in your terminal using standard Python (no external dependencies required):
