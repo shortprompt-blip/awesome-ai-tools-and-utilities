@@ -20,6 +20,14 @@ When using autonomous agents like **Claude Code**, reading entire codebases cons
 python claude_impact_briefing.py --task "Fix authentication bug in user controller"
 ```
 
+
+# Avvia il container Ollama in background e scarica automaticamente il modello
+docker run -d --name shortprompt-ollama -v ollama_data:/root/.ollama -p 11434:11434 ollama/ollama
+docker exec -it shortprompt-ollama ollama pull qwen2.5-coder:1.5b
+
+# Se hai già Ollama installato sul sistema host
+ollama pull qwen2.5-coder:1.5b
+
 ---
 
 ## 📊 Empirical Benchmarks & Token Verification
