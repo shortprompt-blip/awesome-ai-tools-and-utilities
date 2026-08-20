@@ -1,168 +1,101 @@
-Claude Code Instructions
+# 🤖 Claude Code Instructions
 
-Instructions for working efficiently and safely in the ShortPrompt developer repository.
+Instructions for working efficiently, effectively, and safely within the **ShortPrompt** developer repository.
 
-Core Principles
-Prefer local, repository-provided tools when they provide useful analysis or automation.
-Keep changes minimal, focused, and reversible.
-Inspect relevant files before modifying them.
-Preserve existing behavior unless the task explicitly requires a change.
-Avoid unnecessary dependencies.
-Do not modify unrelated files.
-Keep responses concise and implementation-focused.
-Development Workflow
+---
 
-For simple tasks:
+## 🎯 Core Principles
 
-Inspect the relevant files.
-Understand the existing implementation.
-Make the smallest appropriate change.
-Run relevant tests or validation.
-Summarize the changes.
+- **Prioritize Local Tools:** Prefer repository-provided local tools when they offer useful analysis or automation.
+- **Minimal & Reversible Changes:** Keep code modifications minimal, focused, and easily reversible.
+- **Inspect Before Modifying:** Always review relevant files before making updates.
+- **Preserve Behavior:** Maintain existing behavior unless a change is explicitly requested.
+- **Zero Unnecessary Overhead:** Avoid adding unnecessary dependencies or altering unrelated files.
+- **Concise & Implementation-Focused:** Keep responses clear, direct, and code-centric.
 
-For complex multi-file tasks, use the repository impact briefing before making changes:
+---
 
+## 🔄 Development Workflow
+
+### Simple Tasks
+1. Inspect the target files.
+2. Understand the existing logic and context.
+3. Make the smallest appropriate change.
+4. Run relevant tests or validations.
+5. Summarize changes concisely.
+
+### Complex Multi-File Tasks
+Run the repository impact briefing script before making structural edits:
 python claude_impact_briefing.py --task "DESCRIPTION_OF_TASK"
 
+---
 
-The briefing provides a compact overview of repository structure and relevant changes before deeper inspection.
+## 🛠️ Local Developer Tools
 
-Local Developer Tools
-Impact Briefing
+* **Impact Briefing (`/briefing`)** Generates a compressed AST map for complex refactoring, multi-file edits, or unfamiliar areas.
+  python claude_impact_briefing.py --task "DESCRIPTION_OF_TASK"
 
-Use for complex refactoring, multi-file changes, or unfamiliar areas of the repository.
+* **ShortPrompt Compression (`/shortprompt`)** Compresses or optimizes prompts only when explicitly requested. Preserve original intent and wording by default.
+  python shortprompt.py --prompt "PROMPT_TEXT"
 
-python claude_impact_briefing.py --task "DESCRIPTION_OF_TASK"
+* **Local Semantic Search (`/local-search`)** Locates functions or logic semantically across a large codebase using the local LLM.
+  python shortprompt_local.py --search "QUERY"
 
-ShortPrompt
+* **Local Task Delegation (`/delegate`)** Offloads repetitive generation (mocks, boilerplate, schemas, test scaffolding) to the local LLM. Always review output before committing.
+  python shortprompt_local.py --delegate "TASK_DESCRIPTION" --file "PATH_TO_CONTEXT_FILE"
 
-Use when prompt compression, optimization, or shortening is explicitly requested.
+---
 
-python shortprompt.py --prompt "PROMPT_TEXT"
+## 🚀 Local LLM Environment (Ollama)
 
+- **Default Endpoint:** http://localhost:11434
+- **Default Model:** qwen2.5-coder:1.5b (Adjust based on available hardware and workload)
 
-Do not automatically compress every user prompt.
-
-Preserve the user's original intent and wording unless optimization is explicitly requested or clearly beneficial.
-
-Local Semantic Search
-
-Use when locating relevant functions or logic across a larger codebase.
-
-python shortprompt_local.py --search "QUERY"
-
-
-This tool may use a local Ollama model.
-
-Local Task Delegation
-
-Use for suitable repetitive or low-risk generation tasks such as:
-
-Mock data
-Boilerplate
-Schemas
-Simple test scaffolding
-python shortprompt_local.py --delegate "TASK_DESCRIPTION" --file "PATH_TO_CONTEXT_FILE"
-
-
-Always review generated output before committing it.
-
-Local LLM Environment
-
-The repository can optionally use Ollama for local model inference.
-
-Default endpoint:
-
-http://localhost:11434
-
-
-Example model:
-
-qwen2.5-coder:1.5b
-
-
-The model can be changed depending on available hardware and workload.
-
-Docker Setup
+### Docker Setup
 docker run -d \
   --name shortprompt-ollama \
   -v ollama_data:/root/.ollama \
   -p 11434:11434 \
   ollama/ollama
 
-
-Then:
-
 docker exec -it shortprompt-ollama ollama pull qwen2.5-coder:1.5b
 
+Note: Local inference reduces paid API dependency, but it is not token-free and consumes local compute/RAM.
 
-Local inference can reduce reliance on paid cloud API usage, but it is not token-free and still consumes local compute resources.
+---
 
-Code Quality
+## 📐 Quality, Testing & Security Standards
 
-When modifying code:
+### Code Quality Rules
+- Follow existing project style conventions.
+- Prefer simple, focused solutions over complex abstractions.
+- Do not silently change public APIs or behavior.
+- Check and handle new error failure paths properly.
 
-Follow the existing project style.
-Prefer simple solutions over unnecessary abstractions.
-Keep functions focused.
-Avoid unrelated refactoring.
-Do not silently change public behavior.
-Add or update tests when appropriate.
-Check error handling for new failure paths.
-Review generated code before accepting it.
-Testing & Validation
+### Testing & Validation
+- Run relevant available unit tests and syntax/type checks.
+- Review git diff to ensure no unintended modifications occurred.
+- Clearly report validation outcomes (or state reasons if tests couldn't be run).
 
-After making changes:
+### Git Safety
+- **Forbidden Actions:** Never rewrite history, force-push, delete branches, overwrite files blindly, or discard unrelated user changes.
+- **Requirement:** Seek explicit confirmation before performing any destructive Git operation.
 
-Run the most relevant available tests.
-Run syntax or type checks when applicable.
-Check changed files for unintended modifications.
-Report validation results clearly.
+### Privacy & Security
+- Treat user prompts, code, files, and credentials as sensitive.
+- Never log or commit secrets, API keys, or private tokens.
+- Prefer local processing; avoid sending project data to external services unless requested.
 
-If tests cannot be run, state why.
+---
 
-Git Safety
+## 📦 Scope & Final Response Guidelines
 
-Do not:
+### Repository Scope
+This repository covers local LLM workflows, token/context tools, Python developer scripts, and prompt-engineering utilities. Web application assets on ShortPrompt may run in a separate environment—do not modify or make assumptions about the web application runtime unless instructed.
 
-Rewrite history unless explicitly requested.
-Force-push.
-Delete branches.
-Discard unrelated user changes.
-Overwrite files without first understanding their purpose.
-
-Before destructive Git operations, ask for confirmation.
-
-Privacy & Security
-
-Treat user-provided prompts, source code, files, and credentials as potentially sensitive.
-
-Do not expose secrets in logs or output.
-Do not commit API keys or credentials.
-Do not send sensitive project data to external services unless explicitly required.
-Prefer local processing when appropriate.
-Review generated commands before executing potentially destructive operations.
-Repository Scope
-
-This repository contains:
-
-AI developer utilities
-Prompt-engineering tools
-Token and context utilities
-Local LLM workflows
-Python-based developer tools
-
-The ShortPrompt web tools are related to this repository but may use a different runtime environment.
-
-Do not modify or assume anything about the web application unless explicitly required by the task.
-
-Final Response Style
-
-When completing a development task:
-
-Briefly describe what changed.
-Mention important files modified.
-Report tests or validation performed.
-Mention remaining limitations or assumptions.
-
-Keep the final response concise and technically precise.
+### Final Output Format
+When completing tasks, provide a concise summary including:
+1. **What changed:** Brief description of functional updates.
+2. **Files modified:** Explicit list of affected files.
+3. **Tests/Validation:** Summary of validation performed.
+4. **Assumptions/Limitations:** Any remaining constraints or dependencies.
