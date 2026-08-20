@@ -13,7 +13,7 @@ A complete open-source suite of zero-token local CLI tools, pre-execution contex
 
 When using autonomous agents like **Claude Code**, reading entire codebases consumes thousands of API tokens and fills up your context window. 
 
-`claude_impact_briefing.py` runs **locally on your machine (0 tokens used)** before launching Claude Code. It scans Git diffs and code signatures, generating a hyper-compact impact map (>90% context saved).
+`claude_impact_briefing.py` runs **locally on your machine (0 tokens used)** before launching Claude Code. It scans Git diffs, AST signatures, and import graphs to generate a hyper-compact impact map (>95% context saved).
 
 ### Quick Usage:
 ```bash
@@ -59,8 +59,8 @@ Prefer no installation? Access our full suite of free browser-based tools:
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/YOUR_USERNAME/shortprompt-developer-toolkit.git](https://github.com/YOUR_USERNAME/shortprompt-developer-toolkit.git)
-cd shortprompt-developer-toolkit
+git clone [https://github.com/shortprompt-blip/awesome-ai-tools-and-utilities.git](https://github.com/shortprompt-blip/awesome-ai-tools-and-utilities.git)
+cd awesome-ai-tools-and-utilities
 ```
 
 ### 2. Run CLI Tools
