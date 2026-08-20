@@ -1,11 +1,6 @@
 # awesome-ai-tools-and-utilities
 A collection of free web-based utilities for AI prompt engineering, token counting, text cleaning, and file conversion.
 
-
-# 🛠️ Free AI & Web Developer Utilities
-
-A curated collection of fast, browser-based tools designed for AI developers, content creators, and prompt engineers.
-
 ## 🧰 Featured Web Tools
 
 ### 🤖 AI & Prompt Engineering
