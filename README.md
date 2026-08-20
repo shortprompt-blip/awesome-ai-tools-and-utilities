@@ -59,7 +59,7 @@ Prefer no installation? Access our full suite of free browser-based tools:
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/shortprompt-blip/awesome-ai-tools-and-utilities.git](https://github.com/shortprompt-blip/awesome-ai-tools-and-utilities.git)
+git clone https://github.com/shortprompt-blip/awesome-ai-tools-and-utilities.git
 cd awesome-ai-tools-and-utilities
 ```
 
