@@ -28,7 +28,9 @@ Instead of relying on estimated claims, you can verify the exact context compres
 
 ```bash
 python benchmark_briefing.py --task "Add rate limiting to API endpoints"
+```
 
+---
 
 ## 💻 Included Local Python CLI Tools
 
